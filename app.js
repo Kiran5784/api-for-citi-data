@@ -118,7 +118,7 @@ app.post("/populationInfo", async (request, response) => {
         age: Number,
         religion: String,
         caste: String,
-        maritalStatus: Number,
+        maritalStatus: String,
         language: String,
         address: String,
         city: String,
@@ -128,7 +128,7 @@ app.post("/populationInfo", async (request, response) => {
         country: String,
         housingType: String,
         phoneNo: Number,
-        HighestEducation: String,
+        highestEducation: String,
         schoolCollegeName: String,
         occupation: String,
         partTimeFullTime: String,
@@ -269,48 +269,48 @@ app.post("/populationInfo", async (request, response) => {
   
 // });
 
-// const a = {
-//     personalInfo: {
-//         "name": "Kiran",
-//         "gender": "Male",
-//         "age": 20,
-//         "religion": "hindu",
-//         "caste": "maratha",
-//         "maritalStatus": "married",
-//         "language": "marathi",
-//     },
-//     contactDetails: {
-//         address: "UK",
-//         city: "Pune",
-//         pincode: body.contactDetails.pincode,
-//         dist: body.contactDetails.dist,
-//         state: body.contactDetails.state,
-//         country: body.contactDetails.country,
-//         housingType: body.contactDetails.housingType,
-//         phoneNo: body.contactDetails.phoneno,
-//     },
-//     education: {
-//         highestEducation: body.educational.highestEducation,
-//         schoolCollegeName: body.educational.schoolCollegeName,
-//     },
-//     occupational: {
-//         occupation: body.occupational.occupation,
-//         partTimeFullTime: body.occupational.partTimeFullTime,
-//         company: body.occupational.company,
-//         annualIncome: body.occupational.annualIncome,
-//     },
-//     health: {
-//         "medicalCondition": "good",
-//     },
-//     family: {
-//         "noOfFamilyMembers": 5,
-//         "familyIncome": 10000,
-//         "annualIncomeOfFamily": 50000
-//     },
-//    "voterId": 123,
-//     "rationCard": 456,
-//     "panCard": 123,
-//     "aadharCard": 123,
-//     "nameOfOfficer": "XYZ",
-//     "date": 12/12/2023
-// }
+const a = {
+    personalInfo: {
+        "name": "Kiran",
+        "gender": "Male",
+        "age": 20,
+        "religion": "hindu",
+        "caste": "maratha",
+        "maritalStatus": "married",
+        "language": "marathi",
+    },
+    contactDetails: {
+        address: "UK",
+        city: "Pune",
+        pincode:412202,
+        dist: "Pune",
+        state: "Pune",
+        country: "Pune",
+        housingType: "Pune",
+        phoneNo: "Pune",
+    },
+    education: {
+        highestEducation: "Pune",
+        schoolCollegeName: "Pune",
+    },
+    occupational: {
+        occupation: "Pune",
+        partTimeFullTime: "Pune",
+        company: "Pune",
+        annualIncome: 1200,
+    },
+    health: {
+        "medicalCondition": "good",
+    },
+    family: {
+        "noOfFamilyMembers": 5,
+        "familyIncome": 10000,
+        "annualIncomeOfFamily": 50000
+    },
+   "voterId": 123,
+    "rationCard": 456,
+    "panCard": 123,
+    "aadharCard": 123,
+    "nameOfOfficer": "XYZ",
+    "date": 12/12/2023
+}
