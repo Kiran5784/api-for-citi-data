@@ -209,6 +209,52 @@ app.post("/populationInfo", async (request, response) => {
 });
 
 
+app.get('/getPopulationInfo', async (req, res) => {
+    const userSchema = new mongoose.Schema({
+        id: Object,
+        gender: String,
+        age: Number,
+        religion: String,
+        caste: String,
+        maritalStatus: String,
+        language: String,
+        address: String,
+        city: String,
+        pincode: Number,
+        dist: String,
+        state: String,
+        country: String,
+        housingType: String,
+        phoneNo: Number,
+        highestEducation: String,
+        schoolCollegeName: String,
+        occupation: String,
+        partTimeFullTime: String,
+        comapany: String,
+        annualIncome: Number,
+        medicalCondition: String,
+        noOfFamilyMembers: String,
+        familyIncome: Number,
+        annualIncomeOfFamily: Number,
+        voterId: Number,
+        rationCard: Number,
+        panCard: Number,
+        aadharCard: Number,
+        nameOfOfficer: String,
+        date: Date
+    })
+    const electionList = mongoose.model('ElectionInfo', userSchema);
+    const result = await electionList.find({});
+
+    let status = {
+        data: result,
+        code:200
+    };
+    console.log("electionList", result)
+    res.send(status)
+});
+
+
     
 
 
