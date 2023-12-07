@@ -67,6 +67,66 @@ app.post("/status", async (request, response) => {
 
 });
 
+app.get('/getVegetableList', async (req, res) => {
+    // const userSchema = new mongoose.Schema({
+    //     id: Object,
+    //     name: String,
+    //     address: String,
+    //     rollNo: Number,
+    //     author: String
+    // })
+    // const newUserData = mongoose.model('Users', userSchema);
+    // const result = await newUserData.find({});
+    const result = [{
+        vegeName: "Mango",
+        price: 200
+    },
+    {
+        vegeName: "Palak",
+        price: 10
+    },
+    {
+        vegeName: "Paneer",
+        price: 15
+    },
+    {
+        vegeName: "Peas",
+        price: 22
+    },
+    {
+        vegeName: "Drumstick",
+        price: 27
+    },
+    {
+        vegeName: "Coriander",
+        price: 5
+    },
+    {
+        vegeName: "Methi",
+        price: 30
+    },
+    {
+        vegeName: "Pineapple",
+        price: 40
+    },
+    {
+        vegeName: "Matki",
+        price: 20
+    },
+    {
+        vegeName: "Matar",
+        price: 30
+    }
+]
+
+    let status = {
+        data: result,
+        code:200
+    };
+    console.log("userList", result)
+    res.send(status)
+});
+
 app.get('/usersList', async (req, res) => {
     const userSchema = new mongoose.Schema({
         id: Object,
