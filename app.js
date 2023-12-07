@@ -243,7 +243,14 @@ app.get('/getPopulationInfo', async (req, res) => {
         nameOfOfficer: String,
         date: Date
     })
-    const electionList = mongoose.model('ElectionInfo', userSchema);
+    var electionList;
+
+if (mongoose.models.ElectionInfo) {
+    electionList =  mongoose.model('ElectionInfo');
+} else {
+    electionList =  mongoose.model('ElectionInfo', userSchema);
+}
+    // const electionList = mongoose.model('ElectionInfo', userSchema);
     const result = await electionList.find({});
 
     let status = {
