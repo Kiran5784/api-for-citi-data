@@ -207,8 +207,16 @@ app.post("/populationInfo", async (request, response) => {
         nameOfOfficer: String,
         date: Date,
     })
+
+    var newElectionInfoData;
+
+    if (mongoose.models.ElectionInfo) {
+        newElectionInfoData =  mongoose.model('ElectionInfo');
+    } else {
+        newElectionInfoData =  mongoose.model('ElectionInfo', userSchema);
+    }
     
-    const newElectionInfoData = new mongoose.model('ElectionInfo', userSchema)
+    // const newElectionInfoData = new mongoose.model('ElectionInfo', userSchema)
 
     // const newUser = new newUserData({
     //     name: body.name,
