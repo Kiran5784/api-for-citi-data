@@ -282,6 +282,7 @@ app.post("/populationInfo", async (request, response) => {
 app.get('/getPopulationInfo', async (req, res) => {
     const userSchema = new mongoose.Schema({
         id: Object,
+        name: String,
         gender: String,
         age: Number,
         religion: String,
@@ -410,7 +411,7 @@ const a = {
         state: "Pune",
         country: "Pune",
         housingType: "Pune",
-        phoneNo: "Pune",
+        phoneNo: 7894561230,
     },
     education: {
         highestEducation: "Pune",
