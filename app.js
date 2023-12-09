@@ -300,7 +300,7 @@ app.get('/getPopulationInfo', async (req, res) => {
         schoolCollegeName: String,
         occupation: String,
         partTimeFullTime: String,
-        comapany: String,
+        company: String,
         annualIncome: Number,
         medicalCondition: String,
         noOfFamilyMembers: String,
