@@ -227,7 +227,7 @@ app.post("/populationInfo", async (request, response) => {
 
     const newElectionInfo = new newElectionInfoData({
         name: body.personalInfo.name,
-        gender: body.personalInfo.name,
+        gender: body.personalInfo.gender,
         age: body.personalInfo.age,
         religion: body.personalInfo.religion,
         caste: body.personalInfo.caste,
@@ -240,7 +240,7 @@ app.post("/populationInfo", async (request, response) => {
         state: body.contactDetails.state,
         country: body.contactDetails.country,
         housingType: body.contactDetails.housingType,
-        phoneNo: body.contactDetails.phoneno,
+        phoneNo: body.contactDetails.phoneNo,
         highestEducation: body.educational.highestEducation,
         schoolCollegeName: body.educational.schoolCollegeName,
         occupation: body.occupational.occupation,
@@ -250,7 +250,7 @@ app.post("/populationInfo", async (request, response) => {
         medicalCondition: body.health.medicalCondition,
         noOfFamilyMembers: body.family.noOfFamilyMembers,
         familyIncome: body.family.familyIncome,
-        annualIncomeOfFamily: body.family.$oidannualIncomeOfFamily,
+        annualIncomeOfFamily: body.family.annualIncomeOfFamily,
         voterId: body.voterId,
         rationCard: body.rationCard,
         panCard: body.panCard,
