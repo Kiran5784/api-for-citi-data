@@ -598,7 +598,7 @@ app.get("/getCarInfo", async (req, res) => {
     makeYear: Number,
     variant: String,
     kmDriven: String,
-    features: String,
+    features: Array,
     transmission: String,
     bodyType: String,
     color: String,
