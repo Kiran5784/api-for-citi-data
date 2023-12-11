@@ -438,7 +438,7 @@ const a = {
   date: 12 / 12 / 2023,
 };
 app.get("/getCarsOptions", async (req, res) => {
-  const result = {
+  const result = [{
     brandList: [
       {
         brand: "MarutiSuzuki",
@@ -515,7 +515,7 @@ app.get("/getCarsOptions", async (req, res) => {
       { state: "Karnataka", codes: ["Ka-01", "KA-02"] },
       { state: "Punjab", codes: ["PB-01", "PB-02"] },
     ],
-  };
+  }];
   let status = {
     data: result,
     code: 200,
@@ -536,7 +536,7 @@ app.post("/postCarInfo", async (request, response) => {
     transmission: String,
     bodyType: String,
     color: String,
-    seats: Number,
+    seats: String,
     owner: String,
     state: String,
     stateCode: String,
@@ -602,7 +602,7 @@ app.get("/getCarInfo", async (req, res) => {
     transmission: String,
     bodyType: String,
     color: String,
-    seats: Number,
+    seats: String,
     owner: String,
     state: String,
     stateCode: String,
