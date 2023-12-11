@@ -626,3 +626,55 @@ app.get("/getCarInfo", async (req, res) => {
   console.log("CarList", result);
   res.send(status);
 });
+
+app.post("/postUsers",async(request, response) => {
+    const body = request.body;
+    const userSchema = [{
+        username : String,
+        password : String,
+        emailId : String 
+    }];
+    const usersData = new mongoose.model("CarUsers",userSchema);
+
+    const newUser = new usersData({
+        username : body.username,
+        password : body.password,
+        emailId : body.emailId
+    });
+
+    let status = "";
+    await newUser.save().then(
+        () => {
+          status = {
+            message: "User Added Successfully",
+            code: 200,
+          };
+          console.log("Saved Successfully");
+        },
+        (error) => {
+          status = error;
+        }
+      );
+    if (status) {
+        response.send(status);
+    } else {
+        throw status;
+    }
+});
+
+app.get("/getUsers", async (req, res) => {
+    const userSchema = [{
+        username : String,
+        password : String,
+        emailId : String 
+    }];
+    const newUser = mongoose.model("CarUsers", userSchema);
+    const result = await newUser.find({});
+
+    let status = {
+        data: result,
+        code: 200,
+      };
+      console.log("CarUsers", result);
+      res.send(status);
+});
