@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 var cors = require("cors");
+const e = require("express");
 
 const app = express();
 app.use(cors());
@@ -128,22 +129,50 @@ app.get("/getVegetableList", async (req, res) => {
   res.send(status);
 });
 
-app.get("/usersList", async (req, res) => {
+app.post("/login", async (req, res) => {
   const userSchema = new mongoose.Schema({
-    id: Object,
-    name: String,
-    address: String,
-    rollNo: Number,
-    author: String,
-  });
-  const newUserData = mongoose.model("Users", userSchema);
-  const result = await newUserData.find({});
+    username : String,
+    password : String,
+    confirmPassword : String,
+    emailId : String,
+    gender: String
+})
+  // const newUserData = mongoose.model("Users", userSchema);
+  var allUsers;
 
-  let status = {
-    data: result,
-    code: 200,
-  };
-  console.log("userList", result);
+  if (mongoose.models.Users) {
+    allUsers = mongoose.model("userInfos");
+  } else {
+    allUsers = new mongoose.model("userInfos",userSchema);
+  }
+
+  const result = await allUsers.find({});
+  console.log(result);
+  isLoggedIn = false;
+  console.log(req.body)
+  if (result.length > 0) {
+    result.forEach(item => {
+      if(item.username == req.body.username && item.password == req.body.password) {
+        isLoggedIn = true;
+      }
+    })
+  }
+
+  let status;
+  if(isLoggedIn) {
+    status = {
+      data: "Logged In succesful",
+      token: "This is your tempory token that you can use for login",
+      code: 200,
+    };
+  } else {
+    status = {
+      data: "Invalid Username or Password",
+      code: 400,
+    };
+  }
+ 
+  // console.log("userList", result);
   res.send(status);
 });
 
@@ -392,51 +421,51 @@ app.get("/getPopulationInfo", async (req, res) => {
 
 // });
 
-const a = {
-  personalInfo: {
-    name: "Kiran",
-    gender: "Male",
-    age: 20,
-    religion: "hindu",
-    caste: "maratha",
-    maritalStatus: "married",
-    language: "marathi",
-  },
-  contactDetails: {
-    address: "UK",
-    city: "Pune",
-    pincode: 412202,
-    dist: "Pune",
-    state: "Pune",
-    country: "Pune",
-    housingType: "Pune",
-    phoneNo: 7894561230,
-  },
-  education: {
-    highestEducation: "Pune",
-    schoolCollegeName: "Pune",
-  },
-  occupational: {
-    occupation: "Pune",
-    partTimeFullTime: "Pune",
-    company: "Pune",
-    annualIncome: 1200,
-  },
-  health: {
-    medicalCondition: "good",
-  },
-  family: {
-    noOfFamilyMembers: 5,
-    familyIncome: 10000,
-    annualIncomeOfFamily: 50000,
-  },
-  voterId: 123,
-  rationCard: 456,
-  panCard: 123,
-  aadharCard: 123,
-  nameOfOfficer: "XYZ",
-  date: 12 / 12 / 2023,
-};
+// const a = {
+//   personalInfo: {
+//     name: "Kiran",
+//     gender: "Male",
+//     age: 20,
+//     religion: "hindu",
+//     caste: "maratha",
+//     maritalStatus: "married",
+//     language: "marathi",
+//   },
+//   contactDetails: {
+//     address: "UK",
+//     city: "Pune",
+//     pincode: 412202,
+//     dist: "Pune",
+//     state: "Pune",
+//     country: "Pune",
+//     housingType: "Pune",
+//     phoneNo: 7894561230,
+//   },
+//   education: {
+//     highestEducation: "Pune",
+//     schoolCollegeName: "Pune",
+//   },
+//   occupational: {
+//     occupation: "Pune",
+//     partTimeFullTime: "Pune",
+//     company: "Pune",
+//     annualIncome: 1200,
+//   },
+//   health: {
+//     medicalCondition: "good",
+//   },
+//   family: {
+//     noOfFamilyMembers: 5,
+//     familyIncome: 10000,
+//     annualIncomeOfFamily: 50000,
+//   },
+//   voterId: 123,
+//   rationCard: 456,
+//   panCard: 123,
+//   aadharCard: 123,
+//   nameOfOfficer: "XYZ",
+//   date: 12 / 12 / 2023,
+// };
 app.get("/getCarsOptions", async (req, res) => {
   const result = [{
     brandList: [
@@ -627,19 +656,59 @@ app.get("/getCarInfo", async (req, res) => {
   res.send(status);
 });
 
-app.post("/postUsers",async(request, response) => {
+app.post("/registerUser",async(request, response) => {
     const body = request.body;
-    const userSchema = [{
+    const userSchema = new mongoose.Schema({
         username : String,
         password : String,
-        emailId : String 
-    }];
-    const usersData = new mongoose.model("CarUsers",userSchema);
+        confirmPassword : String,
+        emailId : String,
+        gender: String
+    })
+
+    // const userSchema = [{
+    //     username : String,
+    //     password : String,
+    //     confirmPassword : String,
+    //     emailId : String,
+    //     gender: String
+    // }];
+    // const usersData = new mongoose.model("userInfo",userSchema);
+    var usersData;
+
+    if (mongoose.models.userInfo) {
+      usersData = mongoose.model("userInfo");
+    } else {
+      usersData = new mongoose.model("userInfo",userSchema);
+    }
+
+    const result = await usersData.find({});
+    isUserNamePresent = false;
+    if (result.length > 0) {
+      result.forEach(item => {
+        if(item.username == request.body.username) {
+          isUserNamePresent = true;
+        }
+      })
+    }
+
+    // if(isUserNamePresent) {
+    //   try {
+    //     throw new Error(" already exists");
+    // } catch(e) {
+    //     console.log(e); // [Error]
+    //     throw e;
+    // }
+    //   // throw new  Error(" already exists");
+    //   // throw new Error('database failed to connect');
+    // }
+
 
     const newUser = new usersData({
         username : body.username,
         password : body.password,
-        emailId : body.emailId
+        emailId : body.emailId,
+        gender: body.gender
     });
 
     let status = "";
@@ -662,19 +731,19 @@ app.post("/postUsers",async(request, response) => {
     }
 });
 
-app.get("/getUsers", async (req, res) => {
-    const userSchema = [{
-        username : String,
-        password : String,
-        emailId : String 
-    }];
-    const newUser = mongoose.model("CarUsers", userSchema);
-    const result = await newUser.find({});
+// app.get("/getUsers", async (req, res) => {
+//     const userSchema = [{
+//         username : String,
+//         password : String,
+//         emailId : String 
+//     }];
+//     const newUser = mongoose.model("CarUsers", userSchema);
+//     const result = await newUser.find({});
 
-    let status = {
-        data: result,
-        code: 200,
-      };
-      console.log("CarUsers", result);
-      res.send(status);
-});
+//     let status = {
+//         data: result,
+//         code: 200,
+//       };
+//       console.log("CarUsers", result);
+//       res.send(status);
+// });
