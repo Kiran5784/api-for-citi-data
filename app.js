@@ -135,12 +135,13 @@ app.post("/login", async (req, res) => {
     password : String,
     confirmPassword : String,
     emailId : String,
-    gender: String
+    gender: String,
+    type: String
 })
   // const newUserData = mongoose.model("Users", userSchema);
   var allUsers;
 
-  if (mongoose.models.Users) {
+  if (mongoose.models.userInfos) {
     allUsers = mongoose.model("userInfos");
   } else {
     allUsers = new mongoose.model("userInfos",userSchema);
@@ -154,20 +155,31 @@ app.post("/login", async (req, res) => {
     result.forEach(item => {
       if(item.username == req.body.username && item.password == req.body.password) {
         isLoggedIn = true;
+        type = item.type;
       }
     })
   }
 
   let status;
   if(isLoggedIn) {
-    status = {
-      data: "Logged In succesful",
-      token: "This is your tempory token that you can use for login",
-      code: 200,
-    };
+    if(type == 'admin'){
+      status = {
+        data: "Logged In succesful",
+        token: "This is your tempory token that you can use for login",
+        type: type,
+        code: 200,
+      };
+    }else if(type == 'user'){
+      status = {
+        data: "Logged In succesfully",
+        token: "This is your tempory token that you can use for login",
+        type: type,
+        code: 200,
+      };
+    }
   } else {
     status = {
-      data: "Invalid Username or Password",
+      data: "Invalid Username or Password!",
       code: 400,
     };
   }
@@ -663,7 +675,8 @@ app.post("/registerUser",async(request, response) => {
         password : String,
         confirmPassword : String,
         emailId : String,
-        gender: String
+        gender: String,
+        type: String
     })
 
     // const userSchema = [{
@@ -708,7 +721,8 @@ app.post("/registerUser",async(request, response) => {
         username : body.username,
         password : body.password,
         emailId : body.emailId,
-        gender: body.gender
+        gender: body.gender,
+        type: body.type
     });
 
     let status = "";
