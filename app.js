@@ -212,6 +212,49 @@ app.delete("/deleteUser/:id", async (req, res) => {
   // res.send(status)
 });
 
+app.post("/createCoupon", async (request, response) => {
+  const body = request.body;
+  const couponSchema = new mongoose.Schema({
+    couponCode: String,
+    couponPercentage: Number
+  });
+
+  var counponData;
+
+  if (mongoose.models.couponCode) {
+    counponData = mongoose.model("couponCode");
+  } else {
+    counponData = mongoose.model("couponCode", couponSchema);
+  }
+
+  const newCoupon = new counponData({
+    couponCode: body.couponCode,
+    couponPercentage: body.discount,
+  });
+
+  let status = "";
+  await newCoupon.save().then(
+    () => {
+      status = {
+        message: "Coupon Added Successfully",
+        code: 200,
+      };
+      console.log("Saved Successfully");
+    },
+    (error) => {
+      status = error;
+    }
+  );
+
+  if (status) {
+    response.send(status);
+  } else {
+    throw status;
+  }
+
+});
+
+
 app.post("/populationInfo", async (request, response) => {
   const body = request.body;
   const userSchema = new mongoose.Schema({
@@ -258,15 +301,6 @@ app.post("/populationInfo", async (request, response) => {
   } else {
     newElectionInfoData = mongoose.model("ElectionInfo", userSchema);
   }
-
-  // const newElectionInfoData = new mongoose.model('ElectionInfo', userSchema)
-
-  // const newUser = new newUserData({
-  //     name: body.name,
-  //     address: body.address,
-  //     rollNo: body.rollNo,
-  //     author: body.author
-  // })
 
   const newElectionInfo = new newElectionInfoData({
     name: body.personalInfo.name,
@@ -323,6 +357,76 @@ app.post("/populationInfo", async (request, response) => {
   }
 });
 
+app.get("/getAllCoupons", async (request, response) => {
+  const body = request.body;
+  const couponSchema = new mongoose.Schema({
+    couponCode: String,
+    couponPercentage: Number
+  });
+
+  var counponData;
+
+  if (mongoose.models.couponCode) {
+    counponData = mongoose.model("couponCode");
+  } else {
+    counponData = mongoose.model("couponCode", couponSchema);
+  }
+
+  const result = await counponData.find({});
+
+  let status = {
+    data: result,
+    code: 200,
+  };
+  console.log("electionList", result);
+  response.send(status);
+
+});
+
+
+app.post("/redemCouponCode", async (request, response) => {
+  const body = request.body;
+  const couponSchema = new mongoose.Schema({
+    couponCode: String,
+    couponPercentage: Number
+  });
+
+  var counponData;
+
+  if (mongoose.models.couponCode) {
+    counponData = mongoose.model("couponCode");
+  } else {
+    counponData = mongoose.model("couponCode", couponSchema);
+  }
+
+  const result = await counponData.find({});
+  let redemPercentage = 0;
+  result.forEach(item => {
+    if (item.couponCode == request.body.couponCode) {
+      redemPercentage = item.couponPercentage
+    }
+  })
+  let status;
+  if (redemPercentage > 0) {
+    status = {
+      data: {
+        message: "Coupon Redem successfully",
+        discount: redemPercentage
+      },
+      code: 200,
+    };
+  } else {
+    status = {
+      data: {
+        message: "Coupon Redem Failed no discount applicable",
+        discount: 0
+      },
+      code: 200,
+    };
+  }
+  response.send(status);
+
+});
 app.get("/getPopulationInfo", async (req, res) => {
   const userSchema = new mongoose.Schema({
     id: Object,
