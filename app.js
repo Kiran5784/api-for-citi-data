@@ -383,6 +383,41 @@ app.get("/getAllCoupons", async (request, response) => {
 
 });
 
+app.delete("/deleteCoupons/:id", async (request, response) => {
+  const id = request.params.id;
+  const couponSchema = new mongoose.Schema({
+    couponCode: String,
+    couponPercentage: Number
+  });
+
+  var counponData;
+
+  if (mongoose.models.couponCode) {
+    counponData = mongoose.model("couponCode");
+  } else {
+    counponData = mongoose.model("couponCode", couponSchema);
+  }
+
+  await counponData.deleteOne({ _id:id }).then(
+    () => {
+      status = {
+        message: "Coupon Deeleted successfully",
+        code: 200,
+      };
+    },
+    (error) => {
+      status = error;
+    }
+  );
+
+  if (status) {
+    response.send(status);
+  } else {
+    throw status;
+  }
+
+});
+
 
 app.post("/redemCouponCode", async (request, response) => {
   const body = request.body;
@@ -669,6 +704,57 @@ app.get("/getCarsOptions", async (req, res) => {
   res.send(status);
 });
 
+app.delete("/deleteCar/:id", async(request, response) => {
+  const id = request.params.id;
+
+  const carSchema = new mongoose.Schema({
+    brand: String,
+    model: String,
+    makeYear: Number,
+    variant: String,
+    kmDriven: String,
+    features: Array,
+    transmission: String,
+    bodyType: String,
+    color: String,
+    seats: String,
+    owner: String,
+    carBooked: Boolean,
+    bookedTime: Date,
+    state: String,
+    stateCode: String,
+    city: String,
+    price: Number,
+  });
+  var newCarData;
+
+  if (mongoose.models.CarData) {
+    newCarData = mongoose.model("CarData");
+  } else {
+    newCarData = mongoose.model("CarData", carSchema);
+  }
+
+  await newCarData.deleteOne({ _id:id }).then(
+    () => {
+      status = {
+        message: "Coupon Deeleted successfully",
+        code: 200,
+      };
+    },
+    (error) => {
+      status = error;
+    }
+  );
+
+  if (status) {
+    response.send(status);
+  } else {
+    throw status;
+  }
+
+
+});
+
 app.post("/postCarInfo", async (request, response) => {
   const body = request.body;
   const carSchema = new mongoose.Schema({
@@ -683,6 +769,8 @@ app.post("/postCarInfo", async (request, response) => {
     color: String,
     seats: String,
     owner: String,
+    carBooked: Boolean,
+    bookedTime: Date,
     state: String,
     stateCode: String,
     city: String,
@@ -709,6 +797,8 @@ app.post("/postCarInfo", async (request, response) => {
     seats: body.seats,
     owner: body.owner,
     state: body.state,
+    carBooked: body.carBooked,
+    bookedTime: body.bookedDate,
     stateCode: body.stateCode,
     city: body.city,
     price: body.price,
