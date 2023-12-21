@@ -131,45 +131,48 @@ app.get("/getVegetableList", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   const userSchema = new mongoose.Schema({
-    username : String,
-    password : String,
-    confirmPassword : String,
-    emailId : String,
+    username: String,
+    password: String,
+    confirmPassword: String,
+    emailId: String,
     gender: String,
-    type: String
-})
+    type: String,
+  });
   // const newUserData = mongoose.model("Users", userSchema);
   var allUsers;
 
   if (mongoose.models.userInfos) {
     allUsers = mongoose.model("userInfos");
   } else {
-    allUsers = new mongoose.model("userInfos",userSchema);
+    allUsers = new mongoose.model("userInfos", userSchema);
   }
 
   const result = await allUsers.find({});
   console.log(result);
   isLoggedIn = false;
-  console.log(req.body)
+  console.log(req.body);
   if (result.length > 0) {
-    result.forEach(item => {
-      if(item.username == req.body.username && item.password == req.body.password) {
+    result.forEach((item) => {
+      if (
+        item.username == req.body.username &&
+        item.password == req.body.password
+      ) {
         isLoggedIn = true;
         type = item.type;
       }
-    })
+    });
   }
 
   let status;
-  if(isLoggedIn) {
-    if(type == 'admin'){
+  if (isLoggedIn) {
+    if (type == "admin") {
       status = {
         data: "Logged In succesful",
         token: "This is your tempory token that you can use for login",
         type: type,
         code: 200,
       };
-    }else if(type == 'user'){
+    } else if (type == "user") {
       status = {
         data: "Logged In succesfully",
         token: "This is your tempory token that you can use for login",
@@ -183,7 +186,7 @@ app.post("/login", async (req, res) => {
       code: 400,
     };
   }
- 
+
   // console.log("userList", result);
   res.send(status);
 });
@@ -211,7 +214,6 @@ app.delete("/deleteUser/:id", async (req, res) => {
   // console.log("userList", result)
   // res.send(status)
 });
-
 
 app.post("/addToWishList", async (request, response) => {
   const body = request.body;
@@ -273,13 +275,12 @@ app.get("/getAllWishList", async (request, response) => {
   };
   console.log("wishList", result);
   response.send(status);
-
 });
 
-app.delete("/deleteWishList/:id", async (request, response) => {
+app.delete("/deleteWisBookedCard", async (request, response) => {
   const id = request.params.id;
   const couponSchema = new mongoose.Schema({
-    carId: String
+    carId: String,
   });
 
   var wishListData;
@@ -290,7 +291,7 @@ app.delete("/deleteWishList/:id", async (request, response) => {
     wishListData = mongoose.model("wishList", couponSchema);
   }
 
-  await wishListData.deleteOne({ _id:id }).then(
+  await wishListData.deleteOne({ _id: id }).then(
     () => {
       status = {
         message: "Item Deeleted fro wishList successfully",
@@ -307,14 +308,13 @@ app.delete("/deleteWishList/:id", async (request, response) => {
   } else {
     throw status;
   }
-
 });
 
 app.post("/createCoupon", async (request, response) => {
   const body = request.body;
   const couponSchema = new mongoose.Schema({
     couponCode: String,
-    couponPercentage: Number
+    couponPercentage: Number,
   });
 
   var counponData;
@@ -349,7 +349,6 @@ app.post("/createCoupon", async (request, response) => {
   } else {
     throw status;
   }
-
 });
 
 app.post("/bookedCarList", async (request, response) => {
@@ -391,7 +390,7 @@ app.post("/bookedCarList", async (request, response) => {
   }
 });
 
-app.delete("/deleteWishList/:id", async (request, response) => {
+app.delete("/deleteBookedCar/:id", async (request, response) => {
   const id = request.params.id;
   const bookedCarSchema = new mongoose.Schema({
     carId: String,
@@ -405,7 +404,7 @@ app.delete("/deleteWishList/:id", async (request, response) => {
     bookedCarData = mongoose.model("bookedCar", bookedCarSchema);
   }
 
-  await bookedCarData.deleteOne({ _id:id }).then(
+  await bookedCarData.deleteOne({ _id: id }).then(
     () => {
       status = {
         message: "Booked Car deleted successfully",
@@ -422,9 +421,31 @@ app.delete("/deleteWishList/:id", async (request, response) => {
   } else {
     throw status;
   }
-
 });
 
+app.get("/getAllBookedCar", async (request, response) => {
+  const body = request.body;
+  const boookedCarSchema = new mongoose.Schema({
+    carId: String,
+  });
+
+  var bookedCarData;
+
+  if (mongoose.models.bookedCar) {
+    bookedCarData = mongoose.model("bookedCar");
+  } else {
+    bookedCarData = mongoose.model("bookedCar", boookedCarSchema);
+  }
+
+  const result = await bookedCarData.find({});
+
+  let status = {
+    data: result,
+    code: 200,
+  };
+  console.log("wishList", result);
+  response.send(status);
+});
 
 app.post("/populationInfo", async (request, response) => {
   const body = request.body;
@@ -532,7 +553,7 @@ app.get("/getAllCoupons", async (request, response) => {
   const body = request.body;
   const couponSchema = new mongoose.Schema({
     couponCode: String,
-    couponPercentage: Number
+    couponPercentage: Number,
   });
 
   var counponData;
@@ -551,14 +572,13 @@ app.get("/getAllCoupons", async (request, response) => {
   };
   console.log("electionList", result);
   response.send(status);
-
 });
 
 app.delete("/deleteCoupons/:id", async (request, response) => {
   const id = request.params.id;
   const couponSchema = new mongoose.Schema({
     couponCode: String,
-    couponPercentage: Number
+    couponPercentage: Number,
   });
 
   var counponData;
@@ -569,7 +589,7 @@ app.delete("/deleteCoupons/:id", async (request, response) => {
     counponData = mongoose.model("couponCode", couponSchema);
   }
 
-  await counponData.deleteOne({ _id:id }).then(
+  await counponData.deleteOne({ _id: id }).then(
     () => {
       status = {
         message: "Coupon Deeleted successfully",
@@ -586,15 +606,13 @@ app.delete("/deleteCoupons/:id", async (request, response) => {
   } else {
     throw status;
   }
-
 });
-
 
 app.post("/redemCouponCode", async (request, response) => {
   const body = request.body;
   const couponSchema = new mongoose.Schema({
     couponCode: String,
-    couponPercentage: Number
+    couponPercentage: Number,
   });
 
   var counponData;
@@ -607,17 +625,17 @@ app.post("/redemCouponCode", async (request, response) => {
 
   const result = await counponData.find({});
   let redemPercentage = 0;
-  result.forEach(item => {
+  result.forEach((item) => {
     if (item.couponCode == request.body.couponCode) {
-      redemPercentage = item.couponPercentage
+      redemPercentage = item.couponPercentage;
     }
-  })
+  });
   let status;
   if (redemPercentage > 0) {
     status = {
       data: {
         message: "Coupon Redem successfully",
-        discount: redemPercentage
+        discount: redemPercentage,
       },
       code: 200,
     };
@@ -625,13 +643,12 @@ app.post("/redemCouponCode", async (request, response) => {
     status = {
       data: {
         message: "Coupon Redem Failed no discount applicable",
-        discount: 0
+        discount: 0,
       },
       code: 200,
     };
   }
   response.send(status);
-
 });
 app.get("/getPopulationInfo", async (req, res) => {
   const userSchema = new mongoose.Schema({
@@ -789,84 +806,92 @@ app.get("/getPopulationInfo", async (req, res) => {
 //   date: 12 / 12 / 2023,
 // };
 app.get("/getCarsOptions", async (req, res) => {
-  const result = [{
-    brandList: [
-      {
-        brand: "MarutiSuzuki",
-        models: ["Swift", "Baleno", "Alto", "Dzire", "Ciaz"],
-      },
-      {
-        brand: "Toyota",
-        models: ["Corolla", "Camry", "Fortuner", "Innova", "Yaris"],
-      },
-      { brand: "Kia", models: ["Seltos", "Sonet", "Carnival", "Sportage"] },
-      {
-        brand: "Hyundai",
-        models: ["i20", "Creta", "Venue", "Verna", "Tucson"],
-      },
-      { brand: "Honda", models: ["Civic", "Accord", "CR-V", "City", "Amaze"] },
-      {
-        brand: "Tata",
-        models: ["Tiago", "Nexon", "Harrier", "Altroz", "Safari"],
-      },
-      {
-        brand: "Mahindra",
-        models: ["Scorpio", "XUV500", "Thar", "Bolero", "KUV100"],
-      },
-      {
-        brand: "Ford",
-        models: ["EcoSport", "Figo", "Endeavour", "Aspire", "Mustang"],
-      },
-      { brand: "Renault", models: ["Kwid", "Duster", "Triber", "Captur"] },
-      { brand: "Volkswagen", models: ["Polo", "Vento", "Tiguan", "Passat"] },
-      { brand: "Chevrolet", models: ["Cruze", "Beat", "Trailblazer", "Sail"] },
-      { brand: "Fiat", models: ["Punto", "Linea", "500"] },
-    ],
-    makeYear: [
-      2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012,
-      2011,
-    ],
-    variants: ["Petrol", "Diesel", "CNG"],
-    kmDriven: [
-      "0 - 10,000 Km",
-      "10,000 - 20,000 km",
-      "20,000 - 30,000 Km",
-      "30,000 - 40,000 Km",
-      "40,000 - 50,000 Km",
-      "Above 50,000 km",
-    ],
-    features: [
-      "Infotainment system",
-      "Airbags",
-      "steering mounted controls",
-      "Parking sensors",
-      "Alloy wheels",
-      "Push button start",
-      "Sunroof/moonroof",
-    ],
-    transmissions: ["manual", "automatic"],
-    bodyTypes: ["Hatchback", "Sedan", "suv"],
-    colors: [
-      "Silver",
-      "white",
-      "Red",
-      "Blue",
-      "Brown",
-      "Orange",
-      "Black",
-      "Yellow",
-      "Green",
-      "Purple",
-    ],
-    seats: ["4 Seater", "5 Seater", "6 Seater", "7 Seater"],
-    owners: ["1st owner", "2nd owner", "3rd owner"],
-    states: [
-      { state: "Maharashtra", codes: ["MH-12", "MH-14", "MH-01", "MH-13"] },
-      { state: "Gujrat", codes: ["GJ-01", "GJ-05", "GJ-06"] },
-      { state: "Karnataka", codes: ["Ka-01", "KA-02"] },
-      { state: "Punjab", codes: ["PB-01", "PB-02"] },
-    ],
-  }];
+  const result = [
+    {
+      brandList: [
+        {
+          brand: "MarutiSuzuki",
+          models: ["Swift", "Baleno", "Alto", "Dzire", "Ciaz"],
+        },
+        {
+          brand: "Toyota",
+          models: ["Corolla", "Camry", "Fortuner", "Innova", "Yaris"],
+        },
+        { brand: "Kia", models: ["Seltos", "Sonet", "Carnival", "Sportage"] },
+        {
+          brand: "Hyundai",
+          models: ["i20", "Creta", "Venue", "Verna", "Tucson"],
+        },
+        {
+          brand: "Honda",
+          models: ["Civic", "Accord", "CR-V", "City", "Amaze"],
+        },
+        {
+          brand: "Tata",
+          models: ["Tiago", "Nexon", "Harrier", "Altroz", "Safari"],
+        },
+        {
+          brand: "Mahindra",
+          models: ["Scorpio", "XUV500", "Thar", "Bolero", "KUV100"],
+        },
+        {
+          brand: "Ford",
+          models: ["EcoSport", "Figo", "Endeavour", "Aspire", "Mustang"],
+        },
+        { brand: "Renault", models: ["Kwid", "Duster", "Triber", "Captur"] },
+        { brand: "Volkswagen", models: ["Polo", "Vento", "Tiguan", "Passat"] },
+        {
+          brand: "Chevrolet",
+          models: ["Cruze", "Beat", "Trailblazer", "Sail"],
+        },
+        { brand: "Fiat", models: ["Punto", "Linea", "500"] },
+      ],
+      makeYear: [
+        2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012,
+        2011,
+      ],
+      variants: ["Petrol", "Diesel", "CNG"],
+      kmDriven: [
+        "0 - 10,000 Km",
+        "10,000 - 20,000 km",
+        "20,000 - 30,000 Km",
+        "30,000 - 40,000 Km",
+        "40,000 - 50,000 Km",
+        "Above 50,000 km",
+      ],
+      features: [
+        "Infotainment system",
+        "Airbags",
+        "steering mounted controls",
+        "Parking sensors",
+        "Alloy wheels",
+        "Push button start",
+        "Sunroof/moonroof",
+      ],
+      transmissions: ["manual", "automatic"],
+      bodyTypes: ["Hatchback", "Sedan", "suv"],
+      colors: [
+        "Silver",
+        "white",
+        "Red",
+        "Blue",
+        "Brown",
+        "Orange",
+        "Black",
+        "Yellow",
+        "Green",
+        "Purple",
+      ],
+      seats: ["4 Seater", "5 Seater", "6 Seater", "7 Seater"],
+      owners: ["1st owner", "2nd owner", "3rd owner"],
+      states: [
+        { state: "Maharashtra", codes: ["MH-12", "MH-14", "MH-01", "MH-13"] },
+        { state: "Gujrat", codes: ["GJ-01", "GJ-05", "GJ-06"] },
+        { state: "Karnataka", codes: ["Ka-01", "KA-02"] },
+        { state: "Punjab", codes: ["PB-01", "PB-02"] },
+      ],
+    },
+  ];
   let status = {
     data: result,
     code: 200,
@@ -875,7 +900,7 @@ app.get("/getCarsOptions", async (req, res) => {
   res.send(status);
 });
 
-app.delete("/deleteCar/:id", async(request, response) => {
+app.delete("/deleteCar/:id", async (request, response) => {
   const id = request.params.id;
 
   const carSchema = new mongoose.Schema({
@@ -905,7 +930,7 @@ app.delete("/deleteCar/:id", async(request, response) => {
     newCarData = mongoose.model("CarData", carSchema);
   }
 
-  await newCarData.deleteOne({ _id:id }).then(
+  await newCarData.deleteOne({ _id: id }).then(
     () => {
       status = {
         message: "Coupon Deeleted successfully",
@@ -922,8 +947,6 @@ app.delete("/deleteCar/:id", async(request, response) => {
   } else {
     throw status;
   }
-
-
 });
 
 app.post("/postCarInfo", async (request, response) => {
@@ -1063,9 +1086,9 @@ app.post("/getCarByBrandInfo", async (req, res) => {
 
   const result = await carList.find({});
 
-  result.data.filter(item => {
+  result.data.filter((item) => {
     return item.brand == body.brand;
-  })
+  });
 
   let status = {
     data: result,
@@ -1075,88 +1098,87 @@ app.post("/getCarByBrandInfo", async (req, res) => {
   res.send(status);
 });
 
-app.post("/registerUser",async(request, response) => {
-    const body = request.body;
-    const userSchema = new mongoose.Schema({
-        username : String,
-        password : String,
-        confirmPassword : String,
-        emailId : String,
-        gender: String,
-        type: String
-    })
+app.post("/registerUser", async (request, response) => {
+  const body = request.body;
+  const userSchema = new mongoose.Schema({
+    username: String,
+    password: String,
+    confirmPassword: String,
+    emailId: String,
+    gender: String,
+    type: String,
+  });
 
-    // const userSchema = [{
-    //     username : String,
-    //     password : String,
-    //     confirmPassword : String,
-    //     emailId : String,
-    //     gender: String
-    // }];
-    // const usersData = new mongoose.model("userInfo",userSchema);
-    var usersData;
+  // const userSchema = [{
+  //     username : String,
+  //     password : String,
+  //     confirmPassword : String,
+  //     emailId : String,
+  //     gender: String
+  // }];
+  // const usersData = new mongoose.model("userInfo",userSchema);
+  var usersData;
 
-    if (mongoose.models.userInfo) {
-      usersData = mongoose.model("userInfo");
-    } else {
-      usersData = new mongoose.model("userInfo",userSchema);
-    }
+  if (mongoose.models.userInfo) {
+    usersData = mongoose.model("userInfo");
+  } else {
+    usersData = new mongoose.model("userInfo", userSchema);
+  }
 
-    const result = await usersData.find({});
-    isUserNamePresent = false;
-    if (result.length > 0) {
-      result.forEach(item => {
-        if(item.username == request.body.username) {
-          isUserNamePresent = true;
-        }
-      })
-    }
-
-    // if(isUserNamePresent) {
-    //   try {
-    //     throw new Error(" already exists");
-    // } catch(e) {
-    //     console.log(e); // [Error]
-    //     throw e;
-    // }
-    //   // throw new  Error(" already exists");
-    //   // throw new Error('database failed to connect');
-    // }
-
-
-    const newUser = new usersData({
-        username : body.username,
-        password : body.password,
-        emailId : body.emailId,
-        gender: body.gender,
-        type: body.type
+  const result = await usersData.find({});
+  isUserNamePresent = false;
+  if (result.length > 0) {
+    result.forEach((item) => {
+      if (item.username == request.body.username) {
+        isUserNamePresent = true;
+      }
     });
+  }
 
-    let status = "";
-    await newUser.save().then(
-        () => {
-          status = {
-            message: "User Added Successfully",
-            code: 200,
-          };
-          console.log("Saved Successfully");
-        },
-        (error) => {
-          status = error;
-        }
-      );
-    if (status) {
-        response.send(status);
-    } else {
-        throw status;
+  // if(isUserNamePresent) {
+  //   try {
+  //     throw new Error(" already exists");
+  // } catch(e) {
+  //     console.log(e); // [Error]
+  //     throw e;
+  // }
+  //   // throw new  Error(" already exists");
+  //   // throw new Error('database failed to connect');
+  // }
+
+  const newUser = new usersData({
+    username: body.username,
+    password: body.password,
+    emailId: body.emailId,
+    gender: body.gender,
+    type: body.type,
+  });
+
+  let status = "";
+  await newUser.save().then(
+    () => {
+      status = {
+        message: "User Added Successfully",
+        code: 200,
+      };
+      console.log("Saved Successfully");
+    },
+    (error) => {
+      status = error;
     }
+  );
+  if (status) {
+    response.send(status);
+  } else {
+    throw status;
+  }
 });
 
 // app.get("/getUsers", async (req, res) => {
 //     const userSchema = [{
 //         username : String,
 //         password : String,
-//         emailId : String 
+//         emailId : String
 //     }];
 //     const newUser = mongoose.model("CarUsers", userSchema);
 //     const result = await newUser.find({});
