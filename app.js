@@ -1029,7 +1029,7 @@ app.get("/getFoodsOption", async (req, res) => {
         {
           id: 1,
           name: "City View Inn",
-          location: "Mumbai",
+          location: ["Mumbai"],
           cuisines: ["North Indian", "Chinese"],
           time: "11:00 AM - 9:30 PM",
         },
