@@ -183,8 +183,6 @@ app.post("/login", async (req, res) => {
       code: 400,
     };
   }
- 
-  // console.log("userList", result);
   res.send(status);
 });
 
@@ -685,109 +683,6 @@ app.get("/getPopulationInfo", async (req, res) => {
   console.log("electionList", result);
   res.send(status);
 });
-
-// app.get("/status", (request, response) => {
-//     // console.log(request)
-//     const status = {
-//        "Status": "Running",
-//        "code":200
-//     };
-
-//     response.send(status);
-// });
-
-// // app.post('/create', insertController.createData);
-
-// app.get("/signup1", (request, response) => {
-//     mongoose.connect('mongodb://localhost:27017/citi')
-//     .then((database)=>{
-//         console.log("Database connection is Ready "
-//         + "and Server is Listening on Port ", port);
-//     // console.log(database.collection)
-//         // var myobj = { name: "Company Inc", address: "Highway 37" };
-//         // database.collection("customers").insertOne(myobj, function(err, res) {
-//         //     if (err) throw err;
-//         //     console.log("1 document inserted");
-//         //     db.close();
-//         // });
-//     });
-
-// });
-
-// app.get("/signup", (request, response) => {
-//     // mongoose.connect('mongodb://localhost:27017/citi')
-//     // .then((database)=>{
-//     //         console.log("Database connection is Ready "
-//     //         + "and Server is Listening on Port ", port);
-//     //     console.log(database)
-//     //     // var dbo = database.db("Citi");
-//     //     var myobj = { name: "Company Inc", address: "Highway 37" };
-//     //     database.collection("customers").insertOne(myobj, function(err, res) {
-//     //         if (err) throw err;
-//     //         console.log("1 document inserted");
-//     //         db.close();
-//     //     });
-
-//     //     const status = {
-//     //         "Status": "Running",
-//     //         "code":200
-//     //      };
-//     //     response.send(status);
-//     // })
-//     // .catch((err)=>{
-
-//     //     console.log("A error has been occurred while"
-//     //         + " connecting to database.");
-//     //     throw err;
-//     // })
-
-// });
-
-// const a = {
-//   personalInfo: {
-//     name: "Kiran",
-//     gender: "Male",
-//     age: 20,
-//     religion: "hindu",
-//     caste: "maratha",
-//     maritalStatus: "married",
-//     language: "marathi",
-//   },
-//   contactDetails: {
-//     address: "UK",
-//     city: "Pune",
-//     pincode: 412202,
-//     dist: "Pune",
-//     state: "Pune",
-//     country: "Pune",
-//     housingType: "Pune",
-//     phoneNo: 7894561230,
-//   },
-//   education: {
-//     highestEducation: "Pune",
-//     schoolCollegeName: "Pune",
-//   },
-//   occupational: {
-//     occupation: "Pune",
-//     partTimeFullTime: "Pune",
-//     company: "Pune",
-//     annualIncome: 1200,
-//   },
-//   health: {
-//     medicalCondition: "good",
-//   },
-//   family: {
-//     noOfFamilyMembers: 5,
-//     familyIncome: 10000,
-//     annualIncomeOfFamily: 50000,
-//   },
-//   voterId: 123,
-//   rationCard: 456,
-//   panCard: 123,
-//   aadharCard: 123,
-//   nameOfOfficer: "XYZ",
-//   date: 12 / 12 / 2023,
-// };
 app.get("/getCarsOptions", async (req, res) => {
   const result = [{
     brandList: [
@@ -1152,19 +1047,279 @@ app.post("/registerUser",async(request, response) => {
     }
 });
 
-// app.get("/getUsers", async (req, res) => {
-//     const userSchema = [{
-//         username : String,
-//         password : String,
-//         emailId : String 
-//     }];
-//     const newUser = mongoose.model("CarUsers", userSchema);
-//     const result = await newUser.find({});
 
-//     let status = {
-//         data: result,
-//         code: 200,
-//       };
-//       console.log("CarUsers", result);
-//       res.send(status);
-// });
+// API FOR ZOMATO
+// id,
+// name,
+// location,
+// cuisines,
+// time, 
+// Related to Hotels 
+
+// 
+
+      // name: 'Taj Mahal Palace',
+      // location: 'Mumbai',
+      // type: 'North Indian',
+      // time: '9:00 AM-10:00 PM',
+
+/* Create Hotel */
+app.post("/createHotel", async (request, response) => {
+  const body = request.body;
+  const hotelSchema = new mongoose.Schema({
+    name: String,
+    location: String,
+    type: String,
+    cuisines: String,
+    time: String
+  });
+
+  var hotelData;
+
+  if (mongoose.models.hotel) {
+    hotelData = mongoose.model("hotel");
+  } else {
+    hotelData = mongoose.model("hotel", hotelSchema);
+  }
+
+  const newHotel = new hotelData({
+    name: body.name,
+    location: body.location,
+    type: body.type,
+    time: body.time,
+    cuisines: body.cuisines
+  });
+
+  let status = "";
+  await newHotel.save().then(
+    () => {
+      status = {
+        message: "Hotel Added Successfully",
+        code: 200,
+      };
+      console.log("Saved Successfully");
+    },
+    (error) => {
+      status = error;
+    }
+  );
+
+  if (status) {
+    response.send(status);
+  } else {
+    throw status;
+  }
+
+});
+
+/* Delete Hotel */
+app.delete("/deleteHotel/:id", async(request, response) => {
+  const id = request.params.id;
+
+  const hotelSchema = new mongoose.Schema({
+    name: String,
+    location: String,
+    type: String,
+    time: String,
+    cuisines: String
+  });
+  var newHotel;
+
+  if (mongoose.models.hotel) {
+    newHotel = mongoose.model("hotel");
+  } else {
+    newHotel = mongoose.model("hotel", hotelSchema);
+  }
+
+  await newHotel.deleteOne({ _id:id }).then(
+    () => {
+      status = {
+        message: "Hotel Deleted successfully",
+        code: 200,
+      };
+    },
+    (error) => {
+      status = error;
+    }
+  );
+
+  if (status) {
+    response.send(status);
+  } else {
+    throw status;
+  }
+});
+
+/* Get Hotel */
+app.get("/getHotelInfo", async (req, res) => {
+  const hotelSchema = new mongoose.Schema({
+    id: Object,
+    name: String,
+    location: String,
+    type: String,
+    cuisines: String,
+    time: String
+  });
+  var hotelList;
+
+  if (mongoose.models.hotel) {
+    hotelList = mongoose.model("hotel");
+  } else {
+    hotelList = mongoose.model("hotel", hotelSchema);
+  }
+
+  const result = await hotelList.find({});
+
+  let status = {
+    data: result,
+    code: 200,
+  };
+  console.log("HotelList", result);
+  res.send(status);
+});
+
+/* Add Food */
+
+// id,
+// name,
+// location,
+// cuisines,
+// time, 
+// Related to Hotels 
+
+app.post("/listFoodItem", async (request, response) => {
+  const body = request.body;
+  const foodItem = new mongoose.Schema({
+    hotelId: String,
+    foodName: String,
+    foodPrice: Number,
+    foodType: String
+  });
+
+  var foodData;
+
+  if (mongoose.models.foodItem) {
+    foodData = mongoose.model("foodItem");
+  } else {
+    foodData = mongoose.model("foodItem", foodItem);
+  }
+
+  const newFoodItem = new foodData({
+    hotelId: body.hotelId,
+    foodName: body.foodName,
+    foodPrice: body.foodPrice,
+    foodType: body.foodType
+  });
+
+  let status = "";
+  await newFoodItem.save().then(
+    () => {
+      status = {
+        message: "Food Item Added Successfully",
+        code: 200,
+      };
+      console.log("Saved Successfully");
+    },
+    (error) => {
+      status = error;
+    }
+  );
+
+  if (status) {
+    response.send(status);
+  } else {
+    throw status;
+  }
+
+});
+
+app.delete("/deleteHotelItem/:id", async(request, response) => {
+  const id = request.params.id;
+
+  const foodItem = new mongoose.Schema({
+    hotelId: String,
+    foodName: String,
+    foodPrice: Number,
+    foodType: String
+  });
+  var newFoodItem;
+
+  if (mongoose.models.foodItem) {
+    newFoodItem = mongoose.model("foodItem");
+  } else {
+    newFoodItem = mongoose.model("foodItem", foodItem);
+  }
+
+  await newFoodItem.deleteOne({ _id:id }).then(
+    () => {
+      status = {
+        message: "Food Item Deleted successfully",
+        code: 200,
+      };
+    },
+    (error) => {
+      status = error;
+    }
+  );
+
+  if (status) {
+    response.send(status);
+  } else {
+    throw status;
+  }
+});
+
+app.get("/getFoodItemInfo", async (req, res) => {
+  const foodItem = new mongoose.Schema({
+    hotelId: String,
+    foodName: String,
+    foodPrice: Number,
+    foodType: String
+  });
+  var foodItemListList;
+
+  if (mongoose.models.foodItem) {
+    foodItemListList = mongoose.model("foodItem");
+  } else {
+    foodItemListList = mongoose.model("foodItem", foodItem);
+  }
+
+  const result = await foodItemListList.find({});
+
+  let status = {
+    data: result,
+    code: 200,
+  };
+  console.log("Food ItemList", result);
+  res.send(status);
+});
+
+/* Fetch Food By Hotel Id */
+
+app.post("/getFoodItemHotelId", async (req, res) => {
+  const foodItem = new mongoose.Schema({
+    hotelId: String,
+    foodName: String,
+    foodPrice: Number,
+    foodType: String
+  });
+  var foodItemListList;
+
+  if (mongoose.models.foodItem) {
+    foodItemListList = mongoose.model("foodItem");
+  } else {
+    foodItemListList = mongoose.model("foodItem", foodItem);
+  }
+
+  let result = await foodItemListList.find({});
+  result = result.filter(item => {
+    return item.hotelId == req.body.hotelId;
+  })
+
+  let status = {
+    data: result,
+    code: 200,
+  };
+  res.send(status);
+});
+
