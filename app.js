@@ -899,6 +899,213 @@ app.get("/getCarsOptions", async (req, res) => {
   console.log("getCarsOptions", result);
   res.send(status);
 });
+//getFoodsOption
+app.get("/getFoodsOption", async (req, res) => {
+  const result = [
+    {
+      menu: [
+        {
+          category: "veg",
+          starter: [
+            { name: "Paneer Tikka", price: 100 },
+            { name: "Aloo Tikki", price: 80 },
+            { name: "Veg Manchurian", price: 90 },
+            { name: "Corn Cutlet", price: 90 },
+            { name: "Hara Bhara Kebab", price: 90 },
+            { name: "Onion Bhaji", price: 90 },
+            { name: "Mushroom Tikka", price: 90 },
+            { name: "Papdi Chaat", price: 90 },
+            { name: "Veg Seekh Kebab", price: 90 },
+            { name: "Samosa", price: 90 },
+          ],
+          mainCourse: [
+            { name: "Vegetable Biryani", price: 100 },
+            { name: "Palak Paneer", price: 200 },
+            { name: "Chole Bhature", price: 100 },
+            { name: "Kadai Vegetable", price: 100 },
+            { name: "Dal Makhani", price: 120 },
+            { name: "Paneer Butter Masala", price: 130 },
+            { name: "Veg Kofta Curry", price: 120 },
+            { name: "Aloo Gobi", price: 100 },
+            { name: "Baingan Bharta", price: 150 },
+            { name: "Matar Paneer", price: 100 },
+          ],
+          dessert: [
+            { name: "Gulab Jamun", price: 50 },
+            { name: "Rasgulla", price: 60 },
+            { name: "Coconut Ladoo", price: 50 },
+            { name: "Jalebi", price: 30 },
+            { name: "Kheer", price: 60 },
+            { name: "Badam Halwa", price: 50 },
+            { name: "Rasmalai", price: 50 },
+            { name: "Moong Dal Halwa", price: 50 },
+            { name: "Shahi Tukda", price: 40 },
+
+            { name: "ladoo", price: 80 },
+          ],
+        },
+        {
+          category: "non-veg",
+          starter: [
+            { name: "Chicken Lollipop", price: 100 },
+            { name: "Tandoori Chicken", price: 150 },
+            { name: "Butter Garlic Prawns", price: 90 },
+            { name: "Chicken Reshmi Kebab", price: 80 },
+            { name: "Lamb Chops", price: 70 },
+            { name: "Chicken Tikka", price: 100 },
+            { name: "Chicken 65", price: 80 },
+            { name: "Fish Fry", price: 90 },
+            { name: "Egg Pakora", price: 90 },
+            { name: "Prawn Tempura", price: 100 },
+          ],
+          mainCourse: [
+            { name: "Chicken Tikka Masala", price: 100 },
+            { name: "Fish Curry", price: 90 },
+            { name: "Mutton Rogan Josh", price: 100 },
+            { name: "Chicken Biryani", price: 120 },
+            { name: "Egg Curry", price: 120 },
+            { name: "Butter Chicken", price: 110 },
+            { name: "Prawn Curry", price: 130 },
+            { name: "Chicken Korma", price: 150 },
+            { name: "Keema Matar", price: 120 },
+            { name: "Lamb Biryani", price: 130 },
+          ],
+          dessert: [
+            { name: "Shahi Tukda", price: 100 },
+            { name: "Phirni", price: 100 },
+            { name: "Badam Kheer", price: 100 },
+            { name: "Lab-e-Shireen", price: 100 },
+            { name: "Angoori Rabdi", price: 100 },
+            { name: "Mango Kulfi", price: 100 },
+            { name: "Falooda", price: 100 },
+            { name: "Gulab Phirni", price: 100 },
+            { name: "Anjeer Halwa", price: 100 },
+          ],
+        },
+        {
+          category: "vegan",
+          starter: [
+            { name: "Vegan Spring Rolls", price: 100 },
+            { name: "Crispy Zucchini Fritters", price: 150 },
+            { name: "Stuffed Grape Leaves (Dolma)", price: 70 },
+            { name: "Vegan Bruschetta with Tomatoes and Basil", price: 80 },
+            { name: "Vegan Buffalo Cauliflower Wings", price: 100 },
+            { name: "Guacamole with Tortilla Chips", price: 120 },
+            { name: "Vegan Sushi Rolls", price: 140 },
+            { name: "Spicy Roasted Chickpeas", price: 80 },
+
+            { name: "Sweet Potato Bites", price: 70 },
+            { name: "Vegan Spinach and Artichoke Dip", price: 90 },
+          ],
+          mainCourse: [
+            { name: "Vegan Chickpea Curry", price: 220 },
+            { name: "Lentil and Vegetable Stew", price: 230 },
+            { name: "Vegan Mushroom Risotto", price: 230 },
+            { name: "Quinoa and Vegetable Stir-Fry", price: 230 },
+            { name: "Vegan Pad Thai", price: 230 },
+            { name: "Roasted Vegetable and Hummus Wrap", price: 230 },
+            { name: "Vegan Spaghetti Bolognese", price: 230 },
+            { name: "Vegan Chickpea and Spinach Stew", price: 230 },
+            { name: "Vegan Eggplant Parmesan", price: 230 },
+            { name: "Sweet Potato and Black Bean Enchiladas", price: 230 },
+          ],
+          dessert: [
+            { name: "Vegan Chocolate Cake", price: 120 },
+            { name: "Vegan Vanilla Cupcakes", price: 100 },
+            { name: "Dairy-Free Chocolate Chip Cookies", price: 80 },
+            { name: "Vegan Chocolate Avocado Mousse", price: 90 },
+            { name: "Vegan Banana Bread", price: 40 },
+            { name: "Vegan Coconut Ice Cream", price: 80 },
+            { name: "Vegan Berry Sorbet", price: 50 },
+            { name: "Vegan Apple Crisp", price: 90 },
+            { name: "Vegan Lemon Bars", price: 100 },
+            { name: "Vegan Peanut Butter Bliss Balls", price: 80 },
+          ],
+        },
+      ],
+
+      //hotels details:
+      hotelDetails: [
+        {
+          id: 1,
+          name: "City View Inn",
+          location: "Mumbai",
+          cuisines: ["North Indian", "Chinese"],
+          time: "11:00 AM - 9:30 PM",
+        },
+        {
+          id: 2,
+          name: "Delhi Spice Hub",
+          location: "Delhi",
+          cuisines: ["Indian", "Mughlai"],
+          time: "12:00 PM - 10:00 PM",
+        },
+        {
+          id: 3,
+          name: "Bangalore Wok Express",
+          location: "Bangalore",
+          cuisines: ["Chinese", "Thai"],
+          time: "10:30 AM - 9:00 PM",
+        },
+        {
+          id: 4,
+          name: "Chennai Tandoori Bites",
+          location: "Chennai",
+          cuisines: ["North Indian"],
+          time: "11:30 AM - 10:30 PM",
+        },
+        {
+          id: 5,
+          name: "Kolkata Chow Palace",
+          location: "Kolkata",
+          cuisines: ["Chinese", "Tibetan"],
+          time: "12:00 PM - 9:00 PM",
+        },
+        {
+          id: 6,
+          name: "Hyderabad Spice Route Restaurant",
+          location: "Hyderabad",
+          cuisines: ["South Indian", "North Indian"],
+          time: "10:00 AM - 8:30 PM",
+        },
+        {
+          id: 7,
+          name: "Jaipur Masala Junction",
+          location: "Jaipur",
+          cuisines: ["Indian", "Street Food"],
+          time: "11:00 AM - 10:00 PM",
+        },
+        {
+          id: 8,
+          name: "Pune Sizzling Szechuan",
+          location: "Pune",
+          cuisines: ["Chinese", "Szechuan"],
+          time: "12:30 PM - 9:30 PM",
+        },
+        {
+          id: 9,
+          name: "Ahmedabad Flavors of India",
+          location: "Ahmedabad",
+          cuisines: ["Indian", "Continental"],
+          time: "11:00 AM - 8:00 PM",
+        },
+        {
+          id: 10,
+          name: "Goa Delight Diner",
+          location: "Goa",
+          cuisines: ["North Indian", "Italian"],
+          time: "11:30 AM - 9:00 PM",
+        },
+      ],
+    },
+  ];
+  let status = {
+    data: result,
+    code: 200,
+  };
+  console.log("getFoodsOption", result);
+  res.send(status);
+});
 
 app.delete("/deleteCar/:id", async (request, response) => {
   const id = request.params.id;
