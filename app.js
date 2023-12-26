@@ -349,79 +349,112 @@ app.post("/createCoupon", async (request, response) => {
   }
 });
 
-app.post("/bookedCarList", async (request, response) => {
-  const body = request.body;
-  const bookedCarSchema = new mongoose.Schema({
-    carId: String,
-  });
+// app.post("/bookedCarList", async (request, response) => {
+//   const body = request.body;
+//   const bookedCarSchema = new mongoose.Schema({
+//     carId: String,
+//   });
 
-  var bookedCarData;
+//   var bookedCarData;
 
-  if (mongoose.models.bookedCar) {
-    bookedCarData = mongoose.model("bookedCar");
-  } else {
-    bookedCarData = mongoose.model("bookedCar", bookedCarSchema);
-  }
+//   if (mongoose.models.bookedCar) {
+//     bookedCarData = mongoose.model("bookedCar");
+//   } else {
+//     bookedCarData = mongoose.model("bookedCar", bookedCarSchema);
+//   }
 
-  const bookedCarList = new bookedCarData({
-    carId: body.carId,
-  });
+//   const bookedCarList = new bookedCarData({
+//     carId: body.carId,
+//   });
 
-  let status = "";
-  await bookedCarList.save().then(
-    () => {
-      status = {
-        message: "Car Booked Successfully",
-        code: 200,
-      };
-      console.log("Saved Successfully");
-    },
-    (error) => {
-      status = error;
-    }
-  );
+//   let status = "";
+//   await bookedCarList.save().then(
+//     () => {
+//       status = {
+//         message: "Car Booked Successfully",
+//         code: 200,
+//       };
+//       console.log("Saved Successfully");
+//     },
+//     (error) => {
+//       status = error;
+//     }
+//   );
 
-  if (status) {
-    response.send(status);
-  } else {
-    throw status;
-  }
-});
+//   if (status) {
+//     response.send(status);
+//   } else {
+//     throw status;
+//   }
+// });
 
-app.delete("/deleteBookedCar/:id", async (request, response) => {
-  const id = request.params.id;
-  const bookedCarSchema = new mongoose.Schema({
-    carId: String,
-  });
+// app.delete("/deleteBookedCar/:id", async (request, response) => {
+//   const id = request.params.id;
+//   const bookedCarSchema = new mongoose.Schema({
+//     carId: String,
+//   });
 
-  var bookedCarData;
+//   var bookedCarData;
 
-  if (mongoose.models.bookedCar) {
-    bookedCarData = mongoose.model("bookedCar");
-  } else {
-    bookedCarData = mongoose.model("bookedCar", bookedCarSchema);
-  }
+//   if (mongoose.models.bookedCar) {
+//     bookedCarData = mongoose.model("bookedCar");
+//   } else {
+//     bookedCarData = mongoose.model("bookedCar", bookedCarSchema);
+//   }
 
-  await bookedCarData.deleteOne({ _id: id }).then(
-    () => {
-      status = {
-        message: "Booked Car deleted successfully",
-        code: 200,
-      };
-    },
-    (error) => {
-      status = error;
-    }
-  );
+//   await bookedCarData.deleteOne({ _id: id }).then(
+//     () => {
+//       status = {
+//         message: "Booked Car deleted successfully",
+//         code: 200,
+//       };
+//     },
+//     (error) => {
+//       status = error;
+//     }
+//   );
 
-  if (status) {
-    response.send(status);
-  } else {
-    throw status;
-  }
-});
+//   if (status) {
+//     response.send(status);
+//   } else {
+//     throw status;
+//   }
+// });
 
 app.get("/getAllBookedCar", async (request, response) => {
+  const body = request.body;
+  const boookedCarSchema = new mongoose.Schema({
+    carId: String,
+  });
+
+  var bookedCarData;
+
+  if (mongoose.models.cardatas) {
+    bookedCarData = mongoose.model("cardatas");
+  } else {
+    bookedCarData = mongoose.model("cardatas", boookedCarSchema);
+  }
+
+  var result = await bookedCarData.find({});
+  console.log('cards', result)
+  var newData = [];
+  result.forEach((item) => {
+    console.log(item, item.makeYear)
+       if(item.carBooked) {
+        newData.push(item)
+      }
+  })
+  console.log("wishList", newData);
+  let status = {
+    data: newData,
+    code: 200,
+  };
+  
+  response.send(status);
+});
+
+
+app.get("/getAllWishedCar", async (request, response) => {
   const body = request.body;
   const boookedCarSchema = new mongoose.Schema({
     carId: String,
@@ -435,7 +468,11 @@ app.get("/getAllBookedCar", async (request, response) => {
     bookedCarData = mongoose.model("bookedCar", boookedCarSchema);
   }
 
-  const result = await bookedCarData.find({});
+  let result = await bookedCarData.find({});
+
+  result = result.forEach(item => {
+      return item.bookedCar;
+  })
 
   let status = {
     data: result,
@@ -444,7 +481,6 @@ app.get("/getAllBookedCar", async (request, response) => {
   console.log("wishList", result);
   response.send(status);
 });
-
 app.post("/populationInfo", async (request, response) => {
   const body = request.body;
   const userSchema = new mongoose.Schema({
@@ -1269,6 +1305,126 @@ app.post("/registerUser", async (request, response) => {
       status = error;
     }
   );
+  if (status) {
+    response.send(status);
+  } else {
+    throw status;
+  }
+});
+
+app.post("/bookACar", async (request, response) => {
+  const body = request.body;
+  const carSchema = new mongoose.Schema({
+    brand: String,
+    model: String,
+    makeYear: Number,
+    variant: String,
+    kmDriven: String,
+    features: Array,
+    transmission: String,
+    bodyType: String,
+    color: String,
+    seats: String,
+    owner: String,
+    carBooked: Boolean,
+    carWished: Boolean,
+    bookedTime: Date,
+    state: String,
+    stateCode: String,
+    city: String,
+    price: Number,
+  });
+  var newCarData;
+
+  if (mongoose.models.CarData) {
+    newCarData = mongoose.model("CarData");
+  } else {
+    newCarData = mongoose.model("CarData", carSchema);
+  }
+
+  const filter = {
+    _id: body.carId,
+
+  }
+
+  const update = {
+    carBooked: true
+  }
+
+  let status = "";
+  await newCarData.findOneAndUpdate(filter, update).then(
+    () => {
+      status = {
+        message: "Car Booked successfully",
+        code: 200,
+      };
+    },
+    (error) => {
+      status = error;
+    }
+  );
+
+  if (status) {
+    response.send(status);
+  } else {
+    throw status;
+  }
+});
+
+
+
+app.post("/addToWishListCar", async (request, response) => {
+  const body = request.body;
+  const carSchema = new mongoose.Schema({
+    brand: String,
+    model: String,
+    makeYear: Number,
+    variant: String,
+    kmDriven: String,
+    features: Array,
+    transmission: String,
+    bodyType: String,
+    color: String,
+    seats: String,
+    owner: String,
+    carBooked: Boolean,
+    carWished: Boolean,
+    bookedTime: Date,
+    state: String,
+    stateCode: String,
+    city: String,
+    price: Number,
+  });
+  var newCarData;
+
+  if (mongoose.models.CarData) {
+    newCarData = mongoose.model("CarData");
+  } else {
+    newCarData = mongoose.model("CarData", carSchema);
+  }
+
+  const filter = {
+    _id: body.carId,
+
+  }
+
+  const update = {
+    carWished: true
+  }
+
+  let status = "";
+  await newCarData.findOneAndUpdate(filter, update).then(
+    () => {
+      status = {
+        message: "Car Added to WishList successfully",
+        code: 200,
+      };
+    },
+    (error) => {
+      status = error;
+    }
+  );
+
   if (status) {
     response.send(status);
   } else {
