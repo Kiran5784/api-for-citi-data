@@ -186,11 +186,6 @@ app.post("/login", async (req, res) => {
       code: 400,
     };
   }
-<<<<<<< HEAD
-=======
-
-  // console.log("userList", result);
->>>>>>> 573c9edc2f73182e2dab49291a851eca615d35f2
   res.send(status);
 });
 
@@ -1281,7 +1276,6 @@ app.post("/registerUser", async (request, response) => {
   }
 });
 
-<<<<<<< HEAD
 
 // API FOR ZOMATO
 // id,
@@ -1558,21 +1552,3 @@ app.post("/getFoodItemHotelId", async (req, res) => {
   res.send(status);
 });
 
-=======
-// app.get("/getUsers", async (req, res) => {
-//     const userSchema = [{
-//         username : String,
-//         password : String,
-//         emailId : String
-//     }];
-//     const newUser = mongoose.model("CarUsers", userSchema);
-//     const result = await newUser.find({});
-
-//     let status = {
-//         data: result,
-//         code: 200,
-//       };
-//       console.log("CarUsers", result);
-//       res.send(status);
-// });
->>>>>>> 573c9edc2f73182e2dab49291a851eca615d35f2
