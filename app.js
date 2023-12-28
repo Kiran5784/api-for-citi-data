@@ -275,7 +275,7 @@ app.get("/getAllWishList", async (request, response) => {
   response.send(status);
 });
 
-app.delete("/deleteWisBookedCard", async (request, response) => {
+app.delete("/deleteWisBookedCard/:id", async (request, response) => {
   const id = request.params.id;
   const couponSchema = new mongoose.Schema({
     carId: String,
