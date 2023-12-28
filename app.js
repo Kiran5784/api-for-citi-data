@@ -877,6 +877,8 @@ app.get("/getFoodsOption", async (req, res) => {
         },
         {
           category: "non-veg",
+          type: ["starter", "mainCourse", "dessert"],
+
           starter: [
             { name: "Chicken Lollipop", price: 100 },
             { name: "Tandoori Chicken", price: 150 },
@@ -915,6 +917,8 @@ app.get("/getFoodsOption", async (req, res) => {
         },
         {
           category: "vegan",
+          type: ["starter", "mainCourse", "dessert"],
+
           starter: [
             { name: "Vegan Spring Rolls", price: 100 },
             { name: "Crispy Zucchini Fritters", price: 150 },
