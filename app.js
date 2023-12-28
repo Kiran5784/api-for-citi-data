@@ -436,23 +436,22 @@ app.get("/getAllBookedCar", async (request, response) => {
   }
 
   var result = await bookedCarData.find({});
-  console.log('cards', result)
+  console.log("cards", result);
   var newData = [];
   result.forEach((item) => {
-    console.log(item, item.makeYear)
-       if(item.carBooked) {
-        newData.push(item)
-      }
-  })
+    console.log(item, item.makeYear);
+    if (item.carBooked) {
+      newData.push(item);
+    }
+  });
   console.log("wishList", newData);
   let status = {
     data: newData,
     code: 200,
   };
-  
+
   response.send(status);
 });
-
 
 app.get("/getAllWishedCar", async (request, response) => {
   const body = request.body;
@@ -470,9 +469,9 @@ app.get("/getAllWishedCar", async (request, response) => {
 
   let result = await bookedCarData.find({});
 
-  result = result.forEach(item => {
-      return item.bookedCar;
-  })
+  result = result.forEach((item) => {
+    return item.bookedCar;
+  });
 
   let status = {
     data: result,
@@ -837,6 +836,7 @@ app.get("/getFoodsOption", async (req, res) => {
       menu: [
         {
           category: "veg",
+          type: ["starter", "mainCourse", "dessert"],
           starter: [
             { name: "Paneer Tikka", price: 100 },
             { name: "Aloo Tikki", price: 80 },
@@ -1344,12 +1344,11 @@ app.post("/bookACar", async (request, response) => {
 
   const filter = {
     _id: body.carId,
-
-  }
+  };
 
   const update = {
-    carBooked: true
-  }
+    carBooked: true,
+  };
 
   let status = "";
   await newCarData.findOneAndUpdate(filter, update).then(
@@ -1370,8 +1369,6 @@ app.post("/bookACar", async (request, response) => {
     throw status;
   }
 });
-
-
 
 app.post("/addToWishListCar", async (request, response) => {
   const body = request.body;
@@ -1405,12 +1402,11 @@ app.post("/addToWishListCar", async (request, response) => {
 
   const filter = {
     _id: body.carId,
-
-  }
+  };
 
   const update = {
-    carWished: true
-  }
+    carWished: true,
+  };
 
   let status = "";
   await newCarData.findOneAndUpdate(filter, update).then(
@@ -1432,21 +1428,20 @@ app.post("/addToWishListCar", async (request, response) => {
   }
 });
 
-
 // API FOR ZOMATO
 // id,
 // name,
 // location,
 // cuisines,
-// time, 
-// Related to Hotels 
+// time,
+// Related to Hotels
 
-// 
+//
 
-      // name: 'Taj Mahal Palace',
-      // location: 'Mumbai',
-      // type: 'North Indian',
-      // time: '9:00 AM-10:00 PM',
+// name: 'Taj Mahal Palace',
+// location: 'Mumbai',
+// type: 'North Indian',
+// time: '9:00 AM-10:00 PM',
 
 /* Create Hotel */
 app.post("/createHotel", async (request, response) => {
@@ -1456,7 +1451,7 @@ app.post("/createHotel", async (request, response) => {
     location: String,
     type: String,
     cuisines: String,
-    time: String
+    time: String,
   });
 
   var hotelData;
@@ -1472,7 +1467,7 @@ app.post("/createHotel", async (request, response) => {
     location: body.location,
     type: body.type,
     time: body.time,
-    cuisines: body.cuisines
+    cuisines: body.cuisines,
   });
 
   let status = "";
@@ -1494,11 +1489,10 @@ app.post("/createHotel", async (request, response) => {
   } else {
     throw status;
   }
-
 });
 
 /* Delete Hotel */
-app.delete("/deleteHotel/:id", async(request, response) => {
+app.delete("/deleteHotel/:id", async (request, response) => {
   const id = request.params.id;
 
   const hotelSchema = new mongoose.Schema({
@@ -1506,7 +1500,7 @@ app.delete("/deleteHotel/:id", async(request, response) => {
     location: String,
     type: String,
     time: String,
-    cuisines: String
+    cuisines: String,
   });
   var newHotel;
 
@@ -1516,7 +1510,7 @@ app.delete("/deleteHotel/:id", async(request, response) => {
     newHotel = mongoose.model("hotel", hotelSchema);
   }
 
-  await newHotel.deleteOne({ _id:id }).then(
+  await newHotel.deleteOne({ _id: id }).then(
     () => {
       status = {
         message: "Hotel Deleted successfully",
@@ -1543,7 +1537,7 @@ app.get("/getHotelInfo", async (req, res) => {
     location: String,
     type: String,
     cuisines: String,
-    time: String
+    time: String,
   });
   var hotelList;
 
@@ -1569,8 +1563,8 @@ app.get("/getHotelInfo", async (req, res) => {
 // name,
 // location,
 // cuisines,
-// time, 
-// Related to Hotels 
+// time,
+// Related to Hotels
 
 app.post("/listFoodItem", async (request, response) => {
   const body = request.body;
@@ -1578,7 +1572,7 @@ app.post("/listFoodItem", async (request, response) => {
     hotelId: String,
     foodName: String,
     foodPrice: Number,
-    foodType: String
+    foodType: String,
   });
 
   var foodData;
@@ -1593,7 +1587,7 @@ app.post("/listFoodItem", async (request, response) => {
     hotelId: body.hotelId,
     foodName: body.foodName,
     foodPrice: body.foodPrice,
-    foodType: body.foodType
+    foodType: body.foodType,
   });
 
   let status = "";
@@ -1615,17 +1609,16 @@ app.post("/listFoodItem", async (request, response) => {
   } else {
     throw status;
   }
-
 });
 
-app.delete("/deleteHotelItem/:id", async(request, response) => {
+app.delete("/deleteHotelItem/:id", async (request, response) => {
   const id = request.params.id;
 
   const foodItem = new mongoose.Schema({
     hotelId: String,
     foodName: String,
     foodPrice: Number,
-    foodType: String
+    foodType: String,
   });
   var newFoodItem;
 
@@ -1635,7 +1628,7 @@ app.delete("/deleteHotelItem/:id", async(request, response) => {
     newFoodItem = mongoose.model("foodItem", foodItem);
   }
 
-  await newFoodItem.deleteOne({ _id:id }).then(
+  await newFoodItem.deleteOne({ _id: id }).then(
     () => {
       status = {
         message: "Food Item Deleted successfully",
@@ -1659,7 +1652,7 @@ app.get("/getFoodItemInfo", async (req, res) => {
     hotelId: String,
     foodName: String,
     foodPrice: Number,
-    foodType: String
+    foodType: String,
   });
   var foodItemListList;
 
@@ -1686,7 +1679,7 @@ app.post("/getFoodItemHotelId", async (req, res) => {
     hotelId: String,
     foodName: String,
     foodPrice: Number,
-    foodType: String
+    foodType: String,
   });
   var foodItemListList;
 
@@ -1697,9 +1690,9 @@ app.post("/getFoodItemHotelId", async (req, res) => {
   }
 
   let result = await foodItemListList.find({});
-  result = result.filter(item => {
+  result = result.filter((item) => {
     return item.hotelId == req.body.hotelId;
-  })
+  });
 
   let status = {
     data: result,
@@ -1707,4 +1700,3 @@ app.post("/getFoodItemHotelId", async (req, res) => {
   };
   res.send(status);
 });
-
