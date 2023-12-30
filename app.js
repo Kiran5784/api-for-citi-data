@@ -1577,6 +1577,7 @@ app.post("/listFoodItem", async (request, response) => {
     foodName: String,
     foodPrice: Number,
     foodType: String,
+    foodCategory: String,
   });
 
   var foodData;
@@ -1592,6 +1593,7 @@ app.post("/listFoodItem", async (request, response) => {
     foodName: body.foodName,
     foodPrice: body.foodPrice,
     foodType: body.foodType,
+    foodCategory: body.foodCategory,
   });
 
   let status = "";
@@ -1623,6 +1625,7 @@ app.delete("/deleteHotelItem/:id", async (request, response) => {
     foodName: String,
     foodPrice: Number,
     foodType: String,
+    foodCategory: String,
   });
   var newFoodItem;
 
@@ -1657,6 +1660,7 @@ app.get("/getFoodItemInfo", async (req, res) => {
     foodName: String,
     foodPrice: Number,
     foodType: String,
+    foodCategory: String,
   });
   var foodItemListList;
 
@@ -1684,6 +1688,7 @@ app.post("/getFoodItemHotelId", async (req, res) => {
     foodName: String,
     foodPrice: Number,
     foodType: String,
+    foodCategory: String,
   });
   var foodItemListList;
 
